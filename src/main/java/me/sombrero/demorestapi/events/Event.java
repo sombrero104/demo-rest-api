@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * @EqualsAndHashCode(of = {"id", "account"})와 같이
  * 서로 상호참조하는 필드는 추가하면 스택오버플로우가 발생할 수 있다.
  * @Data 또한 @Data 안에 @EqualsAndHashCode를 구현해주는데
- * 모든 필드를 다 사용해서 구현해주기 때문에 사용하면 안된다.
+ * 모든 필드를 다 사용해서 구현해주기 때문에 엔티티에는 @Data를 사용하면 안된다.
  */
 @Builder @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter @EqualsAndHashCode(of = "id")
