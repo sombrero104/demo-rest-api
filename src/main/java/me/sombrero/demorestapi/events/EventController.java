@@ -70,6 +70,24 @@ public class EventController {
          * Errors는 자바 빈 스펙을 준수하는 객체가 아니기 때문에 BeanSerializer를 사용해서 json으로 변환할 수 없다.
          * 위에서 @RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)으로
          * 응답을 HAL_JSON 형태로 주기로 명시했기 때문에 응답을 반환할 때 자동적으로 json으로 변환을 시도한다.
+         *
+         * 그래서 JsonSerializer를 상속받는 ErrorsSerializer를 만든다. (ErrorsSerializer 자바 파일 참조.)
+         * 그리고 결과를 확인하면 @Valid 에러가 발생했을 때 아래처럼 Errors가 JSON으로 변환되어 body로 응답해주는 것을 확인할 수 있다.
+         */
+
+        /**
+         * {
+         *     "field": "endEventDateTime",
+         *     "objectName": "eventDto",
+         *     "code": "wrongValue",
+         *     "defaultMessage": "endEventDateTime is wrong.",
+         *     "rejectedValue": "2018-11-23T14:21"
+         * },
+         * {
+         *     "objectName": "eventDto",
+         *     "code": "wrongPrices",
+         *     "defaultMessage": "values for prices are wrong."
+         * }
          */
 
         if(errors.hasErrors()) { // 파라미터 검증 에러가 있으면 BadReqeust 에러를 리턴한다.

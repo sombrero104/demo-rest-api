@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @JsonComponent로 등록해주면
  * ObjectMapper가 이 ErrorsSerializer를 사용한다.
- * 언제? => Errors라는 객체를 Serialization할 때..
+ * 언제? => extends JsonSerializer<Errors> => Errors라는 객체를 Serialization(객체 -> JSON으로 변환)할 때..
  */
 @JsonComponent
 public class ErrorsSerializer extends JsonSerializer<Errors> {
