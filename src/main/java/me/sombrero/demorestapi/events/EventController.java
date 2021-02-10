@@ -1,5 +1,6 @@
 package me.sombrero.demorestapi.events;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +20,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
 public class EventController {
 
+    private final EventRepository eventRepository;
+
+    public EventController(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
     @PostMapping()
     public ResponseEntity createEvent(@RequestBody Event event) {
         // 메서드에 '/api/events' 경로를 줄 경우..
         // URI createUri = linkTo(methodOn(EventController.class).createEvent(null)).slash("{id}").toUri();
         // 컨트롤러에 '/api/events' 경로를 줄 경우..
-        URI createUri = linkTo(EventController.class).slash("{id}").toUri();
+        // URI createUri = linkTo(EventController.class).slash("{id}").toUri();
         // return ResponseEntity.created(createUri).build();
-        event.setId(10);
+        // event.setId(10);
+
+        Event newEvent = this.eventRepository.save(event);
+        URI createUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
         return ResponseEntity.created(createUri).body(event);
     }
 
