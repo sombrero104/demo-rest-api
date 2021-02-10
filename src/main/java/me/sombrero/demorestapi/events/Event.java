@@ -42,6 +42,6 @@ public class Event {
     private boolean offline;
     private boolean free;
     @Enumerated(EnumType.STRING) // enum 순서가 바뀔수도 있기 때문에 문자열로.
-    private EventStatus eventStatus;
+    private EventStatus eventStatus = EventStatus.DRAFT;
 
 }

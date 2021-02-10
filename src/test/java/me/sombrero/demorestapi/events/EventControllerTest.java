@@ -1,11 +1,14 @@
 package me.sombrero.demorestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +22,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * 테스트 코드를 작성할 때 테스트를 실행하려면
+ * 일일이 Mocking해줘야 할 부분들이 많기 때문에 @SpringBootTest로 해주는 것이 편리하다.
+ */
 @RunWith(SpringRunner.class)
-@WebMvcTest // 슬라이스 테스트. 웹용 빈들만 등록해줌. 때문에 Repository 빈은 자동으로 등록해주지 않는다.
+// @WebMvcTest // 슬라이스 테스트. 웹용 빈들만 등록해줌. 때문에 Repository 빈은 자동으로 등록해주지 않는다.
+@SpringBootTest // 실제 Repository에 저장하는 것까지 포함해서 테스트하게 해준다.
+@AutoConfigureMockMvc // MVC용 Mock DispatcherServlet을 만들어준다.
 public class EventControllerTest {
 
     @Autowired
@@ -29,12 +38,13 @@ public class EventControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @MockBean
-    EventRepository eventRepository;
+    /*@MockBean
+    EventRepository eventRepository;*/
 
     @Test
     public void createEvent() throws Exception {
         Event event = Event.builder()
+                .id(100)
                 .name("Spring")
                 .description("REST API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 23, 14, 21))
@@ -45,6 +55,9 @@ public class EventControllerTest {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("스타텁 팩토리")
+                .free(true)
+                .offline(false)
+                .eventStatus(EventStatus.PUBLISHED)
                 .build();
 
         /**
@@ -52,8 +65,8 @@ public class EventControllerTest {
          * 때문에 아래와 같이 반환값을 추가해준다.
          * eventRepository에 save가 되면 event를 리턴하라.
          */
-        event.setId(10);
-        Mockito.when(eventRepository.save(event)).thenReturn(event);
+        // event.setId(10);
+        // Mockito.when(eventRepository.save(event)).thenReturn(event);
 
         mockMvc.perform(post("/api/events")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -65,7 +78,10 @@ public class EventControllerTest {
                 // .andExpect(header().exists("location"))
                 // .andExpect(header().string("Content-Type", "application/hal+json"))
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonPath("id").value(Matchers.not(100))) // id 값이 100이 아니어야 한다.
+                .andExpect(jsonPath("free").value(Matchers.not(true))) // free 값이 true가 아니어야 한다.
+                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
     }
 
 }
