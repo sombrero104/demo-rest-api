@@ -28,9 +28,12 @@ public class EventController {
 
     private final ModelMapper modelMapper;
 
-    public EventController(EventRepository eventRepository, ModelMapper modelMapper) {
+    private final EventValidator eventValidator;
+
+    public EventController(EventRepository eventRepository, ModelMapper modelMapper, EventValidator eventValidator) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
+        this.eventValidator = eventValidator;
     }
 
     /*@PostMapping
@@ -57,8 +60,25 @@ public class EventController {
      */
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+        /**
+         * BeanSerializer: 자바 빈 스펙 규칙을 준수하는 객체를 Serialization(Object -> JSON 으로 변환)
+         * ObjectMapper에 여러가지 종류의 Serializer가 등록되어 있다.
+         * 현재 우리는 실제로 ObjectMapper 사용하고 있다.
+         * 컨트롤러에서 body로 반환하는 event를 json으로 변환할 때 ObjectMapper를 써서 변환을 한다.
+         * ObjectMapper는 BeanSerializer를 사용해서 (자바 빈 스펙을 준수하는 객체이기 때문에) event 객체를 json으로 변환할 수 있었던 것.
+         * 커스텀한 Serializer를 등록하지 않아도 기본적으로 등록되어 있는 BeanSerializer를 사용해서 json으로 변환한 것이다.
+         * Errors는 자바 빈 스펙을 준수하는 객체가 아니기 때문에 BeanSerializer를 사용해서 json으로 변환할 수 없다.
+         * 위에서 @RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)으로
+         * 응답을 HAL_JSON 형태로 주기로 명시했기 때문에 응답을 반환할 때 자동적으로 json으로 변환을 시도한다.
+         */
+
         if(errors.hasErrors()) { // 파라미터 검증 에러가 있으면 BadReqeust 에러를 리턴한다.
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        eventValidator.validate(eventDto, errors);
+        if(errors.hasErrors()) { // 파라미터 검증 에러가 있으면 BadReqeust 에러를 리턴한다.
+            return ResponseEntity.badRequest().body(errors);
         }
 
         /**
