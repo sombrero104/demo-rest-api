@@ -43,6 +43,63 @@ public class EventControllerTest {
 
     @Test
     public void createEvent() throws Exception {
+        /*Event event = Event.builder()
+                .id(100)
+                .name("Spring")
+                .description("REST API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 23, 14, 21))
+                .closeEnrollmentDateTime(LocalDateTime.of(2018, 11, 24, 14, 21))
+                .beginEventDateTime(LocalDateTime.of(2018, 11, 25,14, 21))
+                .endEventDateTime(LocalDateTime.of(2018, 11, 26, 14, 21))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("스타텁 팩토리")
+                .free(true)
+                .offline(false)
+                .eventStatus(EventStatus.PUBLISHED)
+                .build();*/
+
+        EventDto eventDto = EventDto.builder()
+                .name("Spring")
+                .description("REST API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 23, 14, 21))
+                .closeEnrollmentDateTime(LocalDateTime.of(2018, 11, 24, 14, 21))
+                .beginEventDateTime(LocalDateTime.of(2018, 11, 25,14, 21))
+                .endEventDateTime(LocalDateTime.of(2018, 11, 26, 14, 21))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("스타텁 팩토리")
+                .build();
+
+        /**
+         * Repository가 MockBean이기 때문에 null이 반환된다.
+         * 때문에 아래와 같이 반환값을 추가해준다.
+         * eventRepository에 save가 되면 event를 리턴하라.
+         */
+        // event.setId(10);
+        // Mockito.when(eventRepository.save(event)).thenReturn(event);
+
+        mockMvc.perform(post("/api/events")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaTypes.HAL_JSON) // Hypertext Application Language
+                    .content(objectMapper.writeValueAsString(eventDto)))
+                .andDo(print())
+                .andExpect(status().isCreated()) // isCreated() => status 201
+                .andExpect(jsonPath("id").exists())
+                // .andExpect(header().exists("location"))
+                // .andExpect(header().string("Content-Type", "application/hal+json"))
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonPath("id").value(Matchers.not(100))) // id 값이 100이 아니어야 한다.
+                .andExpect(jsonPath("free").value(Matchers.not(true))) // free 값이 true가 아니어야 한다.
+                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
+        ;
+    }
+
+    @Test
+    public void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
                 .id(100)
                 .name("Spring")
@@ -60,28 +117,13 @@ public class EventControllerTest {
                 .eventStatus(EventStatus.PUBLISHED)
                 .build();
 
-        /**
-         * Repository가 MockBean이기 때문에 null이 반환된다.
-         * 때문에 아래와 같이 반환값을 추가해준다.
-         * eventRepository에 save가 되면 event를 리턴하라.
-         */
-        // event.setId(10);
-        // Mockito.when(eventRepository.save(event)).thenReturn(event);
-
         mockMvc.perform(post("/api/events")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaTypes.HAL_JSON) // Hypertext Application Language
-                    .content(objectMapper.writeValueAsString(event)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaTypes.HAL_JSON) // Hypertext Application Language
+                .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
-                .andExpect(status().isCreated()) // isCreated() => status 201
-                .andExpect(jsonPath("id").exists())
-                // .andExpect(header().exists("location"))
-                // .andExpect(header().string("Content-Type", "application/hal+json"))
-                .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("id").value(Matchers.not(100))) // id 값이 100이 아니어야 한다.
-                .andExpect(jsonPath("free").value(Matchers.not(true))) // free 값이 true가 아니어야 한다.
-                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
+                .andExpect(status().isBadRequest())
+        ;
     }
 
 }
