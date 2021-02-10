@@ -44,4 +44,26 @@ public class Event {
     @Enumerated(EnumType.STRING) // enum 순서가 바뀔수도 있기 때문에 문자열로.
     private EventStatus eventStatus = EventStatus.DRAFT;
 
+    public void update() {
+        // Update free
+        // 가격이 있으면 공짜가 아니다.
+        if(this.basePrice == 0 && this.maxPrice ==0) {
+            this.free = true;
+        } else {
+            this.free = false;
+        }
+
+        // Update offline
+        /**
+         * isBlank() => 자바 11버전에 추가된 메소드.
+         * 이전에는 trim()을 한 후 isEmpty()로 확인했었는데 이젠 isBlank()만 사용하면 됨.
+         * 스페이스바 공백 외에도 다른 공백 문자열들이 있는데 모두 확인해줌.
+         */
+        if(this.location == null || this.location.isBlank()) {
+            this.offline = false;
+        } else {
+            this.offline = true;
+        }
+    }
+
 }

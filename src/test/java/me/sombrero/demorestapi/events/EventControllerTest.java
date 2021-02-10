@@ -94,8 +94,9 @@ public class EventControllerTest {
                 // .andExpect(header().string("Content-Type", "application/hal+json"))
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("id").value(Matchers.not(100))) // id 값이 100이 아니어야 한다.
-                .andExpect(jsonPath("free").value(Matchers.not(true))) // free 값이 true가 아니어야 한다.
+                // .andExpect(jsonPath("id").value(Matchers.not(100))) // id 값이 100이 아니어야 한다.
+                .andExpect(jsonPath("free").value(false)) // free 값이 true가 아니어야 한다.
+                .andExpect(jsonPath("offline").value(true))
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
         ;
     }

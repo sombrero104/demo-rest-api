@@ -96,6 +96,7 @@ public class EventController {
 
         eventValidator.validate(eventDto, errors);
         if(errors.hasErrors()) { // 파라미터 검증 에러가 있으면 BadReqeust 에러를 리턴한다.
+            // 위에서 디버그 잡으면 errors 안에 에러 객체들이 있는 것을 확인할 수 있다.
             return ResponseEntity.badRequest().body(errors);
         }
 
@@ -104,7 +105,7 @@ public class EventController {
          * EventDto로 받은 값을 Event 객체에 매핑하여 담는다.
          */
         Event event = modelMapper.map(eventDto, Event.class);
-
+        event.update(); // 유료/무료 변겅.
         Event newEvent = this.eventRepository.save(event);
         URI createUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
         return ResponseEntity.created(createUri).body(event);

@@ -31,4 +31,70 @@ public class EventTest {
         assertThat(event.getDescription()).isEqualTo(description);
     }
 
+    @Test
+    public void testFree() {
+        // Given (이런 상태에서..)
+        Event event = Event.builder()
+                .basePrice(0)
+                .maxPrice(0)
+                .build();
+
+        // When (이런 일이 벌어지면..)
+        event.update();
+
+        // Then (이렇게 된다.)
+        assertThat(event.isFree()).isTrue();
+
+
+        // Given (이런 상태에서..)
+        event = Event.builder()
+                .basePrice(100)
+                .maxPrice(0)
+                .build();
+
+        // When (이런 일이 벌어지면..)
+        event.update();
+
+        // Then (이렇게 된다.)
+        assertThat(event.isFree()).isFalse();
+
+
+        // Given (이런 상태에서..)
+        event = Event.builder()
+                .basePrice(0)
+                .maxPrice(100)
+                .build();
+
+        // When (이런 일이 벌어지면..)
+        event.update();
+
+        // Then (이렇게 된다.)
+        assertThat(event.isFree()).isFalse();
+    }
+
+    @Test
+    public void testOffline() {
+        // Given (이런 상태에서..)
+        Event event = Event.builder()
+                .location("스타텁 팩토리")
+                .build();
+
+        // When (이런 일이 벌어지면..)
+        event.update();
+
+        // Then (이렇게 된다.)
+        assertThat(event.isOffline()).isTrue();
+
+
+        // Given (이런 상태에서..)
+        event = Event.builder()
+                .build();
+
+        // When (이런 일이 벌어지면..)
+        event.update();
+
+        // Then (이렇게 된다.)
+        assertThat(event.isOffline()).isFalse();
+    }
+
 }
