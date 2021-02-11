@@ -1,6 +1,7 @@
 package me.sombrero.demorestapi.events;
 
 import lombok.*;
+import me.sombrero.demorestapi.accounts.Account;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,6 +44,8 @@ public class Event {
     private boolean free;
     @Enumerated(EnumType.STRING) // enum 순서가 바뀔수도 있기 때문에 문자열로.
     private EventStatus eventStatus = EventStatus.DRAFT;
+    @ManyToOne
+    private Account manager; // 이벤트 관리자.
 
     public void update() {
         // Update free
