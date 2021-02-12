@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 /**
  * 스프링 시큐리티 OAuth 2.0 적용을 위한 설정 파일.
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Bean
     public TokenStore tokenStore() {
+        // return new JdbcTokenStore();
         return new InMemoryTokenStore(); // 저장소는 InMemoryTokenStore로 사용.
     }
 
