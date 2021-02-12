@@ -38,7 +38,7 @@ grant_type=password
 &client_id=[클라이언트 아이디]
 &client_secret=[클라이언트 시크릿]
 </pre>
-<br/>
+<br/><br/>
 
 1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
 => me.sombrero.demorestapi.configs.SecurityConfig.java 파일 참조. <br/>
