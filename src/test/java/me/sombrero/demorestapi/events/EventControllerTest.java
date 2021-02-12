@@ -1,6 +1,7 @@
 package me.sombrero.demorestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.sombrero.demorestapi.common.BaseControllerTest;
 import me.sombrero.demorestapi.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -29,26 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 테스트 코드를 작성할 때 테스트를 실행하려면
  * 일일이 Mocking해줘야 할 부분들이 많기 때문에 @SpringBootTest로 해주는 것이 편리하다.
  */
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 // @WebMvcTest // 슬라이스 테스트. 웹용 빈들만 등록해줌. 때문에 Repository 빈은 자동으로 등록해주지 않는다.
 @SpringBootTest // 실제 Repository에 저장하는 것까지 포함해서 테스트하게 해준다.
-@AutoConfigureMockMvc // MVC용 Mock DispatcherServlet을 만들어준다.
-public class EventControllerTest {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
+@AutoConfigureMockMvc // MVC용 Mock DispatcherServlet을 만들어준다.*/
+public class EventControllerTest extends BaseControllerTest {
 
     /*@MockBean
     EventRepository eventRepository;*/
 
     @Autowired
     EventRepository eventRepository;
-
-    @Autowired
-    ModelMapper modelMapper;
 
     @Test
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
