@@ -1,16 +1,19 @@
 package me.sombrero.demorestapi.configs;
 
+import me.sombrero.demorestapi.accounts.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
- * 인증 토큰을 발급하기 위한 설정.
+ * 인증 토큰을 발급하기 위한 인증 서버(AuthServer) 설정.
  */
 @Configuration
 @EnableAuthorizationServer
@@ -18,6 +21,15 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AuthenticationManager authenticationManager; // 유저 인증 정보를 가지고 있음.
+
+    @Autowired
+    AccountService accountService; // UserDetailsService
+
+    @Autowired
+    TokenStore tokenStore;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -41,9 +53,19 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .refreshTokenValiditySeconds(6 * 10 * 60); // refresh_token이 유효한 시간 (여기선 1시간)
     }
 
+    /**
+     * authenticationManager와 TokenStore와 UserDetailsService를 설정할 수 있다.
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        super.configure(endpoints);
+        /**
+         * authenticationManager는 유저 인증 정보를 가지고 있다.
+         * 유저를 확인해야 토큰을 발급 받을 수 있기 때문에 authenticationManager를
+         * 우리의 유저 인증 정보를 알고 있는 authenticationManager로 설정해준다.
+         */
+        endpoints.authenticationManager(authenticationManager)
+                .userDetailsService(accountService)
+                .tokenStore(tokenStore);
     }
 
 }
