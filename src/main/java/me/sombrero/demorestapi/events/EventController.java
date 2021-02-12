@@ -133,4 +133,29 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity updateEvent(@PathVariable Integer id,
+                                      @RequestBody @Valid EventDto eventDto,
+                                      Errors errors) {
+        Optional<Event> optionalEvent = this.eventRepository.findById(id);
+        if(optionalEvent.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if(errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        this.eventValidator.validate(eventDto, errors);
+        if(errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        Event existingEvent = optionalEvent.get();
+        this.modelMapper.map(eventDto, existingEvent); // eventDto의 데이터를 existingEvent로 덮어씀.
+        Event savedEvent = this.eventRepository.save(existingEvent);
+
+        return ResponseEntity.ok(savedEvent);
+    }
+
 }
