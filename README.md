@@ -18,5 +18,8 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 리소스 요청 인증 처리 (OAuth2 토큰 검사)
 > Order 3 (이 값은 현재 고칠 수 없음.)
 
+## 스프링 시큐리티 OAuth 2.0 적용 
+먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. 
+
 <br/>
 
