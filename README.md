@@ -54,6 +54,7 @@ client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 
 <br/>
 
 3. 인증 토큰을 발급하기 위한 설정인 AuthServerConfig를 만든다.<br/>
+기본으로 인증서버가 등록이 되면 '/oauth/token'이라는 요청을 처리할 수 있는 핸들러가 적용된다. <br/>
 => me.sombrero.demorestapi.configs.AuthServerConfig.java 파일 참조. <br/>
 <br/>
 
