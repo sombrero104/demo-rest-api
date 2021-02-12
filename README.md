@@ -31,11 +31,13 @@ https://developer.okta.com/blog/2018/06/29/what-is-the-oauth2-password-grant <br
 2. Refresh Token: access_token을 발급받을 때 refresh_token도 같이 발급 받는다. <br/>
 이 refresh_token을 가지고 새로운 토큰을 발급받는 방식이다. <br/>
 <br/>
+
 #### * 이 예제에서는 최초 access_token을 발급 받을 때 Password라는 Grant Type으로 발급을 받을 것이다. <br/>
 Password는 다른 Grant Type과는 다르게 홉이 한번이다. (즉, 요청과 응답이 한쌍이다.) <br/>
 한번 요청으로 토큰을 바로 발급 받을 수 있다. <br/>
 (다른 Grant Type은 토큰을 발급받기 위한 토큰을 받는 방식으로 더 과정이 복잡하다.) <br/>
 <br/>
+
 #### * Password 방식에서 토큰(access_token)을 요청할 때에는 아래와 같은 정보들이 필요하다.
 <pre>
 grant_type=password
