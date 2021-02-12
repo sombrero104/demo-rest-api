@@ -18,8 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,8 +41,8 @@ public class EventControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    /*@MockBean
-    EventRepository eventRepository;*/
+    @MockBean
+    EventRepository eventRepository;
 
     @Test
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
@@ -167,6 +169,29 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$[0].code").exists())
                 // .andExpect(jsonPath("$[0].rejectedValue").exists())
         ;
+    }
+
+    @Test
+    @TestDescription("30개의 이벤트를 10개씩 두번째 페이지 조회하기")
+    public void queryEvents() throws Exception {
+        // Given
+        /*IntStream.range(0, 30).forEach(i -> {
+            this.generateEvent(i);
+        });*/
+        IntStream.range(0, 30).forEach(this::generateEvent);
+
+        // When
+        this.mockMvc.perform(get("/api/events"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    private void generateEvent(int i) {
+        Event event = Event.builder()
+                .name("event " + i)
+                .description("test event")
+                .build();
+        this.eventRepository.save(event);
     }
 
 }
