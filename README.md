@@ -23,6 +23,7 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 ## 스프링 시큐리티 OAuth 2.0 적용 
 ** 이 예제에서는 OAuth2가 지원하는 Grant Type 중 Password 방식과 Refresh Token 방식을 사용한다. <br/>
 (Password 방식: 서비스 오너가 만든 클라이언트에서 사용하는 Grant Type.)<br/>
+https://developer.okta.com/blog/2018/06/29/what-is-the-oauth2-password-grant <br/>
 <br/>
 
 1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
