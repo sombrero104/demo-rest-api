@@ -27,6 +27,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        /**
+         * 이 예제에서는 inmemory를 사용했지만,
+         * 원래는 'clients.jdbc()'를 사용해서 DB로 관리하는 것이 이상적이다.
+         */
+        // clients.jdbc()
         clients.inMemory()
                 .withClient("myApp")
                 .authorizedGrantTypes("password", "refresh_token")
