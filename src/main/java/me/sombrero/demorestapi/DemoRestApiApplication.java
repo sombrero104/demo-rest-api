@@ -12,13 +12,4 @@ public class DemoRestApiApplication {
         SpringApplication.run(DemoRestApiApplication.class, args);
     }
 
-    /**
-     * ModelMapper를 공용으로 사용하므로
-     * 이곳에서 빈으로 등록.
-     */
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
 }

@@ -10,10 +10,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * UserDetailsService를 상속받는 AccountService를 만든다.
+ * DB에서 username으로 찾아서 꺼내온 사용자 정보를
+ * UserDetails로 반환하는 loadUserByUsername()을 구현한다.
+ */
 @Service
 public class AccountService implements UserDetailsService {
 
