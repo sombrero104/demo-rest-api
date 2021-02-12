@@ -40,7 +40,7 @@ public class AuthServerConfigTest extends BaseControllerTest {
         this.mockMvc.perform(post("/oauth/token")
                     .with(httpBasic(clientId, clientSecret)) // clientId, clientSecret를 가지고 BasicAuth라는 헤더를 만든다.
                     .param("username", username)
-                    .param("paassword", password)
+                    .param("password", password)
                     .param("grant_type", "password")
                 )
                 .andDo(print())

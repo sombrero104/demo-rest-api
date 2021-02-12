@@ -47,7 +47,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()
                 .withClient("myApp")
                 .authorizedGrantTypes("password", "refresh_token")
-                .scopes("read write") // 정의하기 나름?
+                .scopes("read", "write") // 정의하기 나름?
                 .secret(this.passwordEncoder.encode("pass"))
                 .accessTokenValiditySeconds(10 * 60) // access_token이 유효한 시간은 몇초인지.. (여기선 10분)
                 .refreshTokenValiditySeconds(6 * 10 * 60); // refresh_token이 유효한 시간 (여기선 1시간)
