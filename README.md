@@ -19,6 +19,8 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 > Order 3 (이 값은 현재 고칠 수 없음.)
 
 ## 스프링 시큐리티 OAuth 2.0 적용 
+** 이 예제에서는 OAuth의 Grant Type 중 Password 방식과 Refresh Token 방식을 사용한다. <br/>
+<br/>
 1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
 => me.sombrero.demorestapi.configs.SecurityConfig.java 파일 참조. <br/>
 <br/>
