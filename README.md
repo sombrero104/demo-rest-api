@@ -21,16 +21,16 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 <br/>
 
 ## 스프링 시큐리티 OAuth 2.0 적용 
-** 이 예제에서는 OAuth2가 지원하는 Grant Type 중 Password 방식과 Refresh Token 방식을 사용한다. <br/>
+#### * 이 예제에서는 OAuth2가 지원하는 Grant Type 중 Password 방식과 Refresh Token 방식을 사용한다. <br/>
 (Password 방식: 서비스 오너가 만든 클라이언트에서 사용하는 Grant Type.)<br/>
 https://developer.okta.com/blog/2018/06/29/what-is-the-oauth2-password-grant <br/>
 <br/>
-** 이 예제에서는 최초 AuthToken을 발급 받을 때 Password라는 Grant Type으로 발급을 받을 것이다. <br/>
+#### * 이 예제에서는 최초 AuthToken을 발급 받을 때 Password라는 Grant Type으로 발급을 받을 것이다. <br/>
 Password는 다른 Grant Type과는 다르게 홉이 한번이다. (즉, 요청과 응답이 한쌍이다.) <br/>
 한번 요청으로 토큰을 바로 발급 받을 수 있다. <br/>
 (다른 Grant Type은 토큰을 발급받기 위한 토큰을 받는 방식으로 더 과정이 복잡하다.) <br/>
 <br/>
-** Password 방식에서 토큰을 요청할 때에는 아래와 같은 정보들이 필요하다.
+#### * Password 방식에서 토큰을 요청할 때에는 아래와 같은 정보들이 필요하다.
 <pre>
 grant_type=password
 &username=[사용자계정]
