@@ -50,16 +50,16 @@ client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 
 나머지 grant_type, username, password는 요청의 파라미터로 넘겨줄 수 있다. <br/>
 <br/><br/>
 
-1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
+#### 1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
 => me.sombrero.demorestapi.configs.SecurityConfig.java 파일 참조. <br/>
 <br/>
 
-2. UserDetailsService를 상속받는 AccountService를 만든다.<br/>
+#### 2. UserDetailsService를 상속받는 AccountService를 만든다.<br/>
 (DB에서 username으로 찾아서 꺼내온 사용자 정보를 UserDetails로 반환하는 loadUserByUsername()을 구현한다.)<br/>
 => me.sombrero.demorestapi.accounts.AccountService.java 파일 참조. <br/>
 <br/>
 
-3. 인증 토큰을 발급하기 위한 설정인 AuthServerConfig를 만든다.<br/>
+#### 3. 인증 토큰을 발급하기 위한 설정인 AuthServerConfig를 만든다.<br/>
 기본으로 인증서버가 등록이 되면 '/oauth/token'이라는 요청을 처리할 수 있는 핸들러가 적용된다. <br/>
 => me.sombrero.demorestapi.configs.AuthServerConfig.java 파일 참조. <br/>
 <br/>
