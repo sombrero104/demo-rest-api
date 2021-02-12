@@ -30,6 +30,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()
                 .withClient("myApp")
                 .authorizedGrantTypes("password", "refresh_token")
+                .scopes("read write")
     }
 
     @Override
