@@ -25,6 +25,8 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 (Password 방식: 서비스 오너가 만든 클라이언트에서 사용하는 Grant Type.)<br/>
 https://developer.okta.com/blog/2018/06/29/what-is-the-oauth2-password-grant <br/>
 <br/>
+** 이 예제에서는 최초 AuthToken을 발급 받을 때 Password라는 Grant Type으로 발급을 받을 것이다. <br/>
+<br/>
 
 1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
 => me.sombrero.demorestapi.configs.SecurityConfig.java 파일 참조. <br/>
