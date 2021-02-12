@@ -105,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 // .mvcMatchers(HttpMethod.GET, "/api/**").anonymous() // /api로 시작하는 모든 GET 요청의 익명사용자 접근을 허용.
-                .mvcMatchers(HttpMethod.GET, "/api/**").authenticated() // /api로 시작하는 모든 GET 요청은 로그인 필요.
+                .mvcMatchers(HttpMethod.GET, "/api/**").authenticated() // /api로 시작하는 모든 GET 요청은 인증(로그인) 필요.
                 .anyRequest().authenticated() // 나머지는 인증을 필요로 하겠다.
         ;
     }
