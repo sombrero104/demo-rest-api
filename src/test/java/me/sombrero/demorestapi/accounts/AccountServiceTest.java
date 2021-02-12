@@ -39,7 +39,7 @@ public class AccountServiceTest {
                 .password(password)
                 .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
                 .build();
-        this.accountRepository.save(account);
+        this.accountService.saveAccount(account);
 
         // When
         UserDetailsService userDetailsService = (UserDetailsService)accountService;
