@@ -29,8 +29,7 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 <br/>
 
 2. UserDetailsService를 상속받는 AccountService를 만든다.<br/>
-(DB에서 username으로 찾아서 꺼내온 사용자 정보를<br/>
-UserDetails로 반환하는 loadUserByUsername()을 구현한다.)<br/>
+(DB에서 username으로 찾아서 꺼내온 사용자 정보를 UserDetails로 반환하는 loadUserByUsername()을 구현한다.)<br/>
 => me.sombrero.demorestapi.accounts.AccountService.java 파일 참조. <br/>
 <br/>
 
