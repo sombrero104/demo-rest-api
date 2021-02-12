@@ -1,10 +1,18 @@
 package me.sombrero.demorestapi.configs;
 
+import me.sombrero.demorestapi.accounts.Account;
+import me.sombrero.demorestapi.accounts.AccountRole;
+import me.sombrero.demorestapi.accounts.AccountService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Set;
 
 @Configuration
 public class AppConfig {
@@ -26,6 +34,29 @@ public class AppConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    /**
+     * ApplicationRunner로 애플리케이션이 뜰 때 같이 실행되는 코드를 작성한다.
+     * 여기에서는 애플리케이션이 뜰 때 샘플 데이터(account 데이터)를 추가하는 것을 작성하였다.
+     */
+    @Bean
+    public ApplicationRunner applicationRunner() {
+        return new ApplicationRunner() {
+
+            @Autowired
+            AccountService accountService;
+
+            @Override
+            public void run(ApplicationArguments args) throws Exception {
+                Account account = Account.builder()
+                        .email("sombrero104@email.com")
+                        .password("1234")
+                        .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                        .build();
+                accountService.saveAccount(account);
+            }
+        };
     }
 
 }
