@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -24,6 +25,22 @@ public class AccountService implements UserDetailsService {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder; // 패스워드 인코더를 받아서 패스워드를 저장할 때 인코딩해준다.
+
+    /**
+     * Account를 저장하는 메소드.
+     * 패스워드를 인코딩하여 저장함.
+     */
+    public Account saveAccount(Account account) {
+        account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+        return this.accountRepository.save(account);
+    }
+
+    /**
+     * DB에서 특정 username에 해당하는 사용자 정보를 가져와서
+     * UserDetails로 반환해주는 메소드.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         /**
