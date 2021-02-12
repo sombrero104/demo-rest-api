@@ -38,6 +38,8 @@ grant_type=password
 &client_id=[클라이언트 아이디]
 &client_secret=[클라이언트 시크릿]
 </pre>
+client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 수 있다. <br/>
+나머지 grant_type, username, password는 요청의 파라미터로 넘겨줄 수 있다. <br/>
 <br/><br/>
 
 1. 먼저 AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다. <br/>
