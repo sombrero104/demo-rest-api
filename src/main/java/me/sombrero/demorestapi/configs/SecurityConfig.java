@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -90,12 +91,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 때문에 사실상 static 리소스들은 전부 허용할 것이라면
      * 웹의 필터 자체에서 걸러주는 것이 서버가 조금이라도 일을 덜하게 되므로 부담을 덜어준다.
      */
-    /*@Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        /*http.authorizeRequests()
             .mvcMatchers("/docs/index.html").anonymous()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).anonymous()
+        ;*/
+
+        http
+            .anonymous() // 익명 사용자 허용.
+                .and()
+            .formLogin() // 폼 인증 사용. (경로를 지정하지 않으면 스프링 시큐리티 기본 페이지 사용.)
+                .and()
+            .authorizeRequests()
+                .mvcMatchers(HttpMethod.GET, "/api/**").anonymous() // /api로 시작하는 모든 GET 요청의 익명사용자 접근을 허용.
+                .anyRequest().authenticated() // 나머지는 인증을 필요로 하겠다.
         ;
-    }*/
+    }
 
 }
