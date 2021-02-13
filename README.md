@@ -18,7 +18,7 @@ OAuth2 토큰 발행(/oauth/token) 및 토큰 인증(/oauth/authorize)
 리소스 요청 인증 처리 (OAuth2 토큰 검사)
 > Order 3 (이 값은 현재 고칠 수 없음.)
 
-<br/>
+<br/><br/><br/>
 
 # 스프링 시큐리티 OAuth 2.0 적용 
 ### * 이 예제에서는 OAuth2가 지원하는 Grant Type 중 Password 방식과 Refresh Token 방식을 사용한다. <br/>
@@ -69,7 +69,7 @@ client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 
 => me.sombrero.demorestapi.configs.ResourceServerConfig.java 파일 참조. <br/>
 <br/>
 
-<br/><br/>
+<br/><br/><br/>
 
 # Postman으로 확인해보기
 ## access_token 토큰 발급 받기 
