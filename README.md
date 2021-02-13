@@ -73,4 +73,4 @@ client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 
 
 https://www.baeldung.com/spring-security-oauth-resource-server  <br/>
 https://dassum.medium.com/securing-spring-boot-rest-api-with-json-web-token-and-jdbc-token-store-67558a7d6c29  <br/>
-<br/><br/>
+<br/><br/><br/>
