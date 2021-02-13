@@ -76,11 +76,13 @@ client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 
 POST 요청으로 URL을 'http://localhost:8080/oauth/token'으로 입력하고 <br/>
 Authorization 탭에서 Type을 'Basic Auth'로 선택한 후, <br/>
 username에는 client_id를, Password에는 client_secret을 입력한다.<br/>
+<br/>
 <img src="./images/getToken_01.png" width="90%" /><br/>
 <br/>
 그리고 Body 탭에서 회원정보인 username, password를 입력하고,<br/>
 grant_type을 'password'로 입력한 후 <br/>
 요청을 하면 access_token과 refresh_token이 발급된 것을 확인할 수 있다. <br/>
+<br/>
 <img src="./images/getToken_02.png" width="90%" /><br/>
 <br/>
 
@@ -89,11 +91,13 @@ grant_type을 'password'로 입력한 후 <br/>
 POST 요청으로 URL을 'http://localhost:8080/api/events'으로 입력하고<br/>
 Body 탭에서 raw 옵션을 선택 후 셀렉트 옵션에서 'JSON' 포맷으로 선택한다. <br/>
 그리고 추가할 이벤트 내용을 JSON 포맷으로 작성한다. <br/>
+<br/>
 <img src="./images/createEvent_01.png" width="90%" /><br/>
 <br/>
 Authorization 탭에서 Type을 'Bearer Token'으로 선택한 후,<br/>
 위에서 발급받은 access_token을 입력한다. <br/>
 그리고 요청을 하면 이벤트가 정상적으로 추가되고 추가된 이벤트에 대한 내용을 확인할 수 있다. <br/>
+<br/>
 <img src="./images/createEvent_02.png" width="90%" /><br/>
 <br/>
 
