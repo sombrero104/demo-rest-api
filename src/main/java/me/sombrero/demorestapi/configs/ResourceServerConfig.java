@@ -27,7 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .anonymous()
                 .and()
             .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/api/**").anonymous()
+                .mvcMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .exceptionHandling() // 인증이 안되거나 권한이 없는 경우 발생하는 예외를 처리할 핸들러를 지정한다.
