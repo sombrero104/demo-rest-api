@@ -74,3 +74,18 @@ client_id와 client_secret은 BasicAuthentication 형태로 헤더에 넣어줄 
 https://www.baeldung.com/spring-security-oauth-resource-server  <br/>
 https://dassum.medium.com/securing-spring-boot-rest-api-with-json-web-token-and-jdbc-token-store-67558a7d6c29  <br/>
 <br/><br/><br/>
+
+## Postman으로 확인해보기
+### access_token 토큰 발급 받기 
+POST 요청으로 URL을 'http://localhost:8080/oauth/token'으로 입력하고 <br/>
+Authorization 탭에서 Type을 Basic Auth로 선택한 후, <br/>
+username에는 client_id를, Password에는 client_secret을 입력한다.<br/>
+<img src="./images/getToken_01.png" width="40%" /><br/>
+그리고 Body 탭에서 회원정보인 username, password를 입력하고,<br/>
+grant_type을 'password'로 입력한 후 <br/>
+요청을 하면 access_token과 refresh_token이 발급된 것을 확인할 수 있다. <br/>
+<img src="./images/getToken_02.png" width="40%" /><br/>
+<br/>
+
+<br/><br/><br/>
+
