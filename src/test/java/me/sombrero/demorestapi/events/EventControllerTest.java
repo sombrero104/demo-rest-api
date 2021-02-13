@@ -356,7 +356,9 @@ public class EventControllerTest extends BaseControllerTest {
 
         var responseBody = perform.andReturn().getResponse().getContentAsString();
         Jackson2JsonParser parser = new Jackson2JsonParser();
-        return parser.parseMap(responseBody).get("access_token").toString();
+        String access_token = parser.parseMap(responseBody).get("access_token").toString();
+        System.out.println("################### access_token: " + access_token);
+        return access_token;
     }
 
 }
