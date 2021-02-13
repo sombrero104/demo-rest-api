@@ -77,13 +77,13 @@ POST 요청으로 URL을 'http://localhost:8080/oauth/token'으로 입력하고 
 Authorization 탭에서 Type을 'Basic Auth'로 선택한 후, <br/>
 username에는 client_id를, Password에는 client_secret을 입력한다.<br/><br/>
 
-<img src="./images/getToken_01.png" width="80%" /><br/><br/>
+<img src="./images/getToken_01.png" width="75%" /><br/><br/>
 
 그리고 Body 탭에서 회원정보인 username, password를 입력하고,<br/>
 grant_type을 'password'로 입력한 후 <br/>
 요청을 하면 access_token과 refresh_token이 발급된 것을 확인할 수 있다. <br/><br/>
 
-<img src="./images/getToken_02.png" width="80%" /><br/><br/>
+<img src="./images/getToken_02.png" width="75%" /><br/><br/>
 <br/><br/>
 
 ## 위에서 발급 받은 access_token 토큰 사용하기
