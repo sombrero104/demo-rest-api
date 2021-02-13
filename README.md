@@ -90,7 +90,7 @@ POST 요청으로 URL을 'http://localhost:8080/api/events'으로 입력하고<b
 Body 탭에서 raw 옵션을 선택 후 셀렉트 옵션에서 'JSON' 포맷으로 선택한다. <br/>
 그리고 추가할 이벤트 내용을 JSON 포맷으로 작성한다. <br/><br/>
 
-<img src="./images/createEvent_01.png" width="90%" /><br/><br/>
+<img src="./images/createEvent_01.png" width="80%" /><br/><br/>
 
 Authorization 탭에서 Type을 'Bearer Token'으로 선택한 후,<br/>
 위에서 발급받은 access_token을 입력한다. <br/>
