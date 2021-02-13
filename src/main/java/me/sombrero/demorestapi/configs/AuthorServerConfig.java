@@ -1,6 +1,7 @@
 package me.sombrero.demorestapi.configs;
 
 import me.sombrero.demorestapi.accounts.AccountService;
+import me.sombrero.demorestapi.common.AppProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +34,9 @@ public class AuthorServerConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     TokenStore tokenStore;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         // client_secret을 확인할 때 이 passwordEncoder를 사용한다.
@@ -47,10 +51,10 @@ public class AuthorServerConfig extends AuthorizationServerConfigurerAdapter {
          */
         // clients.jdbc()
         clients.inMemory()
-                .withClient("myApp")
+                .withClient(appProperties.getClientId())
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("read", "write") // 정의하기 나름?
-                .secret(this.passwordEncoder.encode("pass"))
+                .secret(this.passwordEncoder.encode(appProperties.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60) // access_token이 유효한 시간은 몇초인지.. (여기선 10분)
                 .refreshTokenValiditySeconds(6 * 10 * 60); // refresh_token이 유효한 시간 (여기선 1시간)
     }

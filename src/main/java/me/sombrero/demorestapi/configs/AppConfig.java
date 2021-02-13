@@ -1,8 +1,10 @@
 package me.sombrero.demorestapi.configs;
 
 import me.sombrero.demorestapi.accounts.Account;
+import me.sombrero.demorestapi.accounts.AccountRepository;
 import me.sombrero.demorestapi.accounts.AccountRole;
 import me.sombrero.demorestapi.accounts.AccountService;
+import me.sombrero.demorestapi.common.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -50,14 +52,24 @@ public class AppConfig {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                Account account = Account.builder()
-                        .email("sombrero104@email.com")
-                        .password("1234")
+                Account admin = Account.builder()
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
                         .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
                         .build();
-                accountService.saveAccount(account);
+                accountService.saveAccount(admin);
+
+                Account user = Account.builder()
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .roles(Set.of(AccountRole.USER))
+                        .build();
+                accountService.saveAccount(user);
             }
         };
     }
