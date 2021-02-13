@@ -75,28 +75,30 @@ https://www.baeldung.com/spring-security-oauth-resource-server  <br/>
 https://dassum.medium.com/securing-spring-boot-rest-api-with-json-web-token-and-jdbc-token-store-67558a7d6c29  <br/>
 <br/><br/><br/>
 
-## Postman으로 확인해보기
-### access_token 토큰 발급 받기 
+# Postman으로 확인해보기
+## access_token 토큰 발급 받기 
 POST 요청으로 URL을 'http://localhost:8080/oauth/token'으로 입력하고 <br/>
 Authorization 탭에서 Type을 'Basic Auth'로 선택한 후, <br/>
 username에는 client_id를, Password에는 client_secret을 입력한다.<br/>
-<img src="./images/getToken_01.png" width="40%" /><br/>
+<img src="./images/getToken_01.png" width="60%" /><br/>
+<br/>
 그리고 Body 탭에서 회원정보인 username, password를 입력하고,<br/>
 grant_type을 'password'로 입력한 후 <br/>
 요청을 하면 access_token과 refresh_token이 발급된 것을 확인할 수 있다. <br/>
-<img src="./images/getToken_02.png" width="40%" /><br/>
+<img src="./images/getToken_02.png" width="60%" /><br/>
 <br/>
 
-### 위에서 받은 토큰 사용하기
-#### 이벤트 생성하기 
+## 위에서 받은 토큰 사용하기
+### 이벤트 생성하기 
 POST 요청으로 URL을 'http://localhost:8080/api/events'으로 입력하고<br/>
 Body 탭에서 raw 옵션을 선택 후 셀렉트 옵션에서 'JSON' 포맷으로 선택한다. <br/>
 그리고 추가할 이벤트 내용을 JSON 포맷으로 작성한다. <br/>
-<img src="./images/createEvent_01.png" width="40%" /><br/>
+<img src="./images/createEvent_01.png" width="60%" /><br/>
+<br/>
 Authorization 탭에서 Type을 'Bearer Token'으로 선택한 후,<br/>
 위에서 발급받은 access_token을 입력한다. <br/>
 그리고 요청을 하면 이벤트가 정상적으로 추가되고 추가된 이벤트에 대한 내용을 확인할 수 있다. <br/>
-<img src="./images/createEvent_02.png" width="40%" /><br/>
+<img src="./images/createEvent_02.png" width="60%" /><br/>
 <br/>
 
 <br/><br/><br/>
