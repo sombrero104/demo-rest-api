@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
+/**
+ * 애플리케이션 전체 공통 설정.
+ */
 @Configuration
 public class AppConfig {
 

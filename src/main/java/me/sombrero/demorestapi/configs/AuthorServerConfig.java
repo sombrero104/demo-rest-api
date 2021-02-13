@@ -13,11 +13,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
- * 인증 토큰을 발급하기 위한 인증 서버(AuthServer) 설정.
+ * [스프링 시큐리티 OAuth2.0]
+ * [Authorization Server 설정]
+ * 인증 토큰을 발급하기 위한 Authorization Server 설정.
  */
 @Configuration
 @EnableAuthorizationServer
-public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthorServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     PasswordEncoder passwordEncoder;

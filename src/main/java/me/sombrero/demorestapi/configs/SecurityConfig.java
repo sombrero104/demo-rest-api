@@ -18,11 +18,11 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 /**
- * 스프링 시큐리티 OAuth 2.0 적용을 위한 설정 파일.
- * AuthorizationServer와 ResourceServer가 공통으로 사용할 설정을 추가해야 한다.
+ * [스프링 시큐리티 OAuth2.0]
+ * [스프링 시큐리티 공통 설정]
+ * Authorization Server와 Resource Server가 공통으로 사용할 설정을 추가해야 한다.
  * 아래와 같이 @EnableWebSecurity를 붙이고 WebSecurityConfigurerAdapter를 상속받는다.
  * 이 두 설정을 추가하는 순간부터는 스프링부트가 기본적으로 제공하는 스프링 시큐리티 설정은 더이상 적용되지 않는다.
- *
  */
 @Configuration
 @EnableWebSecurity
