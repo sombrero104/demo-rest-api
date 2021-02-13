@@ -1,9 +1,14 @@
 package me.sombrero.demorestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.sombrero.demorestapi.accounts.Account;
+import me.sombrero.demorestapi.accounts.AccountRepository;
+import me.sombrero.demorestapi.accounts.AccountRole;
+import me.sombrero.demorestapi.accounts.AccountService;
 import me.sombrero.demorestapi.common.BaseControllerTest;
 import me.sombrero.demorestapi.common.TestDescription;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -16,12 +21,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.oauth2.common.util.Jackson2JsonParser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.stream.IntStream;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,6 +51,18 @@ public class EventControllerTest extends BaseControllerTest {
 
     @Autowired
     EventRepository eventRepository;
+
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Before
+    public void setUp() {
+        this.eventRepository.deleteAll();
+        this.accountRepository.deleteAll();
+    }
 
     @Test
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
@@ -84,6 +106,7 @@ public class EventControllerTest extends BaseControllerTest {
         // Mockito.when(eventRepository.save(event)).thenReturn(event);
 
         mockMvc.perform(post("/api/events")
+                    .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaTypes.HAL_JSON) // Hypertext Application Language
                     .content(objectMapper.writeValueAsString(eventDto)))
@@ -122,6 +145,7 @@ public class EventControllerTest extends BaseControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/events")
+                .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaTypes.HAL_JSON) // Hypertext Application Language
                 .content(objectMapper.writeValueAsString(event)))
@@ -135,6 +159,7 @@ public class EventControllerTest extends BaseControllerTest {
     public void createEvent_Bad_Request_Empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build(); // Empty EventDto
         this.mockMvc.perform(post("/api/events")
+                    .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(this.objectMapper.writeValueAsString(eventDto)))
                 .andExpect(status().isBadRequest());
@@ -157,6 +182,7 @@ public class EventControllerTest extends BaseControllerTest {
                 .build();
 
         this.mockMvc.perform(post("/api/events")
+                .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
@@ -224,6 +250,7 @@ public class EventControllerTest extends BaseControllerTest {
 
         // When & Then
         this.mockMvc.perform(put("/api/events/{id}", event.getId())
+                    .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(this.objectMapper.writeValueAsString(eventDto))
                 )
@@ -241,6 +268,7 @@ public class EventControllerTest extends BaseControllerTest {
 
         // When & Then
         this.mockMvc.perform(put("/api/events/{id}", event.getId())
+                    .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(this.objectMapper.writeValueAsString(eventDto))
                 )
@@ -259,6 +287,7 @@ public class EventControllerTest extends BaseControllerTest {
 
         // When & Then
         this.mockMvc.perform(put("/api/events/{id}", event.getId())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(eventDto))
                 )
@@ -275,11 +304,12 @@ public class EventControllerTest extends BaseControllerTest {
 
         // When & Then
         this.mockMvc.perform(put("/api/events/1232133213")
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(eventDto))
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     private Event generateEvent(int i) {
@@ -299,6 +329,35 @@ public class EventControllerTest extends BaseControllerTest {
                 .eventStatus(EventStatus.DRAFT)
                 .build();
         return this.eventRepository.save(event);
+    }
+
+    private String getBearerToken() throws Exception {
+        return "Bearer " + getAccessToken();
+    }
+
+    private String getAccessToken() throws Exception {
+        // Given
+        String username = "sombrero104@gmail.com";
+        String password = "1234";
+        Account account = Account.builder()
+                .email(username)
+                .password(password)
+                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                .build();
+        this.accountService.saveAccount(account);
+
+        String clientId = "myApp";
+        String clientSecret = "pass";
+
+        ResultActions perform = this.mockMvc.perform(post("/oauth/token")
+                .with(httpBasic(clientId, clientSecret)) // clientId, clientSecret를 가지고 BasicAuth라는 헤더를 만든다.
+                .param("username", username)
+                .param("password", password)
+                .param("grant_type", "password"));
+
+        var responseBody = perform.andReturn().getResponse().getContentAsString();
+        Jackson2JsonParser parser = new Jackson2JsonParser();
+        return parser.parseMap(responseBody).get("access_token").toString();
     }
 
 }
