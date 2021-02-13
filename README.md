@@ -86,7 +86,7 @@ grant_type을 'password'로 입력한 후 <br/>
 <img src="./images/getToken_02.png" width="90%" /><br/>
 <br/>
 
-## 위에서 받은 토큰 사용하기
+## 위에서 발급 받은 access_token 토큰 사용하기
 ### 이벤트 생성하기 
 POST 요청으로 URL을 'http://localhost:8080/api/events'으로 입력하고<br/>
 Body 탭에서 raw 옵션을 선택 후 셀렉트 옵션에서 'JSON' 포맷으로 선택한다. <br/>
