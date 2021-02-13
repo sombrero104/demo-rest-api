@@ -1,7 +1,5 @@
 # REST API
-<br/>
-
-# REST API 보안 적용
+## REST API 보안 적용
 <br/><br/><br/>
 
 # 스프링 시큐리티
