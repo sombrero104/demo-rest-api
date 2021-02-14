@@ -142,7 +142,7 @@ public class EventController {
          *    (코드가 좀 더 심플하도록 간추려진다.)
          */
 
-        // 현재 사용자 정보 가져오기.
+        // SecurityContextHolder로 SecurityContextHolder(ThreadLocal)에 저장되어 있는 현재 사용자 정보 가져오기.
         // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // User principal = (User)authentication.getPrincipal(); // 우리가 설정한 스프링 시큐리티의 User로 받을 수 있다.
         // 또는 파라미터에 '@AuthenticationPrincipal User user'를 추가하면 바로 현재 사용자 정보를 User로 가져올 수 있다.
@@ -167,6 +167,7 @@ public class EventController {
 
     @GetMapping("/{id}")
     public ResponseEntity getEvent(@PathVariable Integer id) {
+        // SecurityContextHolder로 SecurityContextHolder(ThreadLocal)에 저장되어 있는 현재 사용자 정보 가져오기.
         // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Optional<Event> optionalEvent = this.eventRepository.findById(id);
