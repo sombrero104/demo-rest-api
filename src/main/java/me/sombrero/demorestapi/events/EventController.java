@@ -9,6 +9,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +68,7 @@ public class EventController {
      */
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+
         /**
          * BeanSerializer: 자바 빈 스펙 규칙을 준수하는 객체를 Serialization(Object -> JSON 으로 변환)
          * ObjectMapper에 여러가지 종류의 Serializer가 등록되어 있다.
@@ -116,9 +121,27 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler) {
+    public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler
+                                        , @AuthenticationPrincipal User user) {
+
+        // 현재 사용자 정보 가져오기.
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // User principal = (User)authentication.getPrincipal(); // 우리가 설정한 스프링 시큐리티의 User로 받을 수 있다.
+        // 또는 파라미터에 '@AuthenticationPrincipal User user'를 추가하면 바로 현재 사용자 정보를 User로 가져올 수 있다.
+        // 하지만 궁극적인 목적은 현재 사용자 정보를 User가 아닌 Account로 받아오는 것이다.
+
         Page<Event> page = this.eventRepository.findAll(pageable);
         PagedModel<EntityModel<Event>> pagedModel = assembler.toModel(page);
+
+        /**
+         * 현재 사용자가 null이 아니면 Event를 생성할 수 있는 createEvent 링크를 JSON에 추가해서 반환한다.
+         * 이런 경우에는 현재 사용자가 있는지 없는지만 판단하면 되기 때문에 스프링 시큐리티가 제공하는 User로 사용해도 된다.
+         * 하지만 이벤트를 생성할 때에는 Account 정보를 Event에 주입해줘야 하기 때문에 Account가 필요하다.
+         */
+        if(user != null) {
+            pagedModel.add(linkTo(EventController.class).withRel("create-event"));
+        }
+
         return ResponseEntity.ok(pagedModel);
     }
 

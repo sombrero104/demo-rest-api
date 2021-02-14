@@ -221,6 +221,29 @@ public class EventControllerTest extends BaseControllerTest {
     }
 
     @Test
+    @TestDescription("30개의 이벤트를 10개씩 두번째 페이지 조회하기")
+    public void queryEventsWithAuthentication() throws Exception {
+        // Given
+        /*IntStream.range(0, 30).forEach(i -> {
+            this.generateEvent(i);
+        });*/
+        IntStream.range(0, 30).forEach(this::generateEvent);
+
+        // When
+        this.mockMvc.perform(get("/api/events")
+                .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                .param("page", "1") // 페이지는 0부터 시작, 즉 1이 두번째 페이지.
+                .param("size", "10") // 한 페이지의 사이즈는 10개.
+                .param("sort", "name,DESC") // name 역순으로 조회.
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("page").exists())
+                .andExpect(jsonPath("_links.create-event").exists())
+        ;
+    }
+
+    @Test
     @TestDescription("기존의 이벤트를 하나 조회하기")
     public void getEvent() throws Exception {
         // Given

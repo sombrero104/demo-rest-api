@@ -53,7 +53,16 @@ public class AccountService implements UserDetailsService {
         // 이제 Account를 UserDetails 형태로 변환해서 반환해야 하는데
         // 스프링 시큐리티가 UserDetails를 구현한 User를 만들어놓았다.
         // 우리는 이 User를 사용하여 Account 정보를 User에 주어서 반환한다.
-        return new User(account.getEmail(), account.getPassword(), authorities(account.getRoles()));
+        // return new User(account.getEmail(), account.getPassword(), authorities(account.getRoles()));
+
+        /**
+         * 컨트롤러에서 User가 아닌 Account로 현재 사용자 정보를 가져오기 위해
+         * AccountAdapter를 만들어서 사용한다.
+         * AccountAdapter는 User를 상속받고 User는 UserDetails를 상속받는다.
+         * AccountAdapter와 User의 다른 점은 AccountAdapter는 User의 기능도 가지면서
+         * Account를 저장하도록 만들었다. 때문에 AccountAdapter 언제든 Account를 꺼내서 쓸 수 있다.
+         */
+        return new AccountAdapter(account);
     }
 
     /**
