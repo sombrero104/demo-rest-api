@@ -57,7 +57,7 @@ public class Event {
      * 아래와 같이 Event 내의 Account 필드에
      * '@JsonSerialize(using = AccountSerializer.class)' 애노테이션을 붙여준다.
      * 이 애노테이션을 붙인 후 createEvent를 요청하면 반환되는 JSON 내용에 Account의 id만 노출되는 것을 확인할 수 있다.
-     * (변경전에는 패스워드까지 노출되어 문제가 되었었다.)
+     * (이렇게 변경하지 않으면 Account의 패스워드 정보까지 노출되기 때문에 문제가 된다.)
      */
     @ManyToOne @JsonSerialize(using = AccountSerializer.class)
     private Account manager; // 이벤트 관리자.
