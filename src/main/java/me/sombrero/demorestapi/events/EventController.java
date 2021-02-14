@@ -167,6 +167,8 @@ public class EventController {
 
     @GetMapping("/{id}")
     public ResponseEntity getEvent(@PathVariable Integer id) {
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Optional<Event> optionalEvent = this.eventRepository.findById(id);
         if(optionalEvent.isEmpty()) {
             return ResponseEntity.notFound().build();
