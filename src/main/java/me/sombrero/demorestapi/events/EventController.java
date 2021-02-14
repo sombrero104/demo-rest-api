@@ -70,7 +70,8 @@ public class EventController {
      * @Valid 애노테이션 사용한 파라미터 오른쪽에 Errors를 주면 Validation 관련 에러를 받을 수 있다.
      */
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+    public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors
+                                        , @CurrentUser Account account) {
 
         /**
          * BeanSerializer: 자바 빈 스펙 규칙을 준수하는 객체를 Serialization(Object -> JSON 으로 변환)
@@ -118,6 +119,7 @@ public class EventController {
          */
         Event event = modelMapper.map(eventDto, Event.class);
         event.update(); // 유료/무료 변겅.
+        event.setManager(account);
         Event newEvent = this.eventRepository.save(event);
         URI createUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
         return ResponseEntity.created(createUri).body(event);
@@ -166,7 +168,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getEvent(@PathVariable Integer id) {
+    public ResponseEntity getEvent(@PathVariable Integer id, @CurrentUser Account account) {
         // SecurityContextHolder로 SecurityContextHolder(ThreadLocal)에 저장되어 있는 현재 사용자 정보 가져오기.
         // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -176,6 +178,10 @@ public class EventController {
         }
 
         Event event = optionalEvent.get();
+        if(event.getManager().equals(account)) { // 이벤트를 작성한 사람이 현재 사용자인 경우.
+            // TODO 이벤트를 업데이트 할 수 있는 링크를 JSON에 추가헤서 반환.
+        }
+
         return ResponseEntity.ok(event);
     }
 
