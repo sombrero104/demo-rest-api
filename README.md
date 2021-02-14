@@ -105,3 +105,8 @@ Authorization 탭에서 Type을 'Bearer Token'으로 선택한 후,<br/>
 https://www.baeldung.com/spring-security-oauth-resource-server  <br/>
 https://dassum.medium.com/securing-spring-boot-rest-api-with-json-web-token-and-jdbc-token-store-67558a7d6c29  <br/>
 <br/><br/><br/>
+
+
+* jUnit4 패키지: org.junit.Test;<br/>
+* jUnit5 패키지: org.junit.jupiter.api.Test;<br/>
+<br/><br/><br/>
