@@ -1,10 +1,7 @@
 package me.sombrero.demorestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.sombrero.demorestapi.accounts.Account;
-import me.sombrero.demorestapi.accounts.AccountRepository;
-import me.sombrero.demorestapi.accounts.AccountRole;
-import me.sombrero.demorestapi.accounts.AccountService;
+import me.sombrero.demorestapi.accounts.*;
 import me.sombrero.demorestapi.common.AppProperties;
 import me.sombrero.demorestapi.common.BaseControllerTest;
 import me.sombrero.demorestapi.common.TestDescription;
@@ -23,6 +20,9 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.util.Jackson2JsonParser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -340,6 +340,9 @@ public class EventControllerTest extends BaseControllerTest {
     }
 
     private Event generateEvent(int i) {
+        AccountAdapter accountAdapter = (AccountAdapter)accountService.loadUserByUsername(appProperties.getUserUsername());
+        Account account = accountAdapter.getAccount();
+
         Event event = Event.builder()
                 .name("event " + i)
                 .description("REST API Development with Spring")
@@ -354,6 +357,7 @@ public class EventControllerTest extends BaseControllerTest {
                 .free(false)
                 .offline(true)
                 .eventStatus(EventStatus.DRAFT)
+                .manager(account)
                 .build();
         return this.eventRepository.save(event);
     }
