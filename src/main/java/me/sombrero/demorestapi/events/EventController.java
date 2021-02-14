@@ -2,6 +2,7 @@ package me.sombrero.demorestapi.events;
 
 import me.sombrero.demorestapi.accounts.Account;
 import me.sombrero.demorestapi.accounts.AccountAdapter;
+import me.sombrero.demorestapi.accounts.CurrentUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -126,7 +127,8 @@ public class EventController {
     public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler
                                         // , @AuthenticationPrincipal User user) { // 1. 스프링 시큐리티가 제공하는 User로 가져오는 방법.
                                         // , @AuthenticationPrincipal AccountAdapter accountAdapter) { // 2. AccountAdapter를 만드는 방법.
-                                        , @AuthenticationPrincipal(expression = "account") Account account) { // 3. Account 필드를 가져오는 방법.
+                                        // , @AuthenticationPrincipal(expression = "account") Account account) { // 3. Account 필드를 가져오는 방법.
+                                        , @CurrentUser Account account) { // 4. 커스텀 애노테이션 만들어서 사용하는 방법.
         /**
          * 1. 스프링 시큐리티가 제공하는 User로 가져오는 방법.
          * 2. User를 상속받는 AccountAdapter를 만들어서 Account 정보도 저장하도록 추가한 후 AccountAdapter로 가져오는 방법.
@@ -134,6 +136,10 @@ public class EventController {
          *    '@AuthenticationPrincipal AccountAdapter accountAdapter'로 AccountAdapter를 가져오도록 하지 않고,
          *    @AuthenticationPrincipal에 '(expression = "account")'를 사용하면,
          *    AccountAdapter 필드 중 Account 필드를 가져와서 주입해준다.
+         * 4. '@AuthenticationPrincipal(expression = "account")'를 간추린 커스텀 애노테이션 만드는 방법.
+         *    @AuthenticationPrincipal 애노테이션은 메타애노테이션으로 사용이 가능하다.
+         *    @AuthenticationPrincipal를 메타애노테이션으로 사용하는 '@CurrentUser'라는 커스텀 애노테이션을 만들자.
+         *    (코드가 좀 더 심플하도록 간추려진다.)
          */
 
         // 현재 사용자 정보 가져오기.
