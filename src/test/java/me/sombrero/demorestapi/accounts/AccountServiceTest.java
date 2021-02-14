@@ -18,6 +18,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -59,6 +60,10 @@ public class AccountServiceTest {
     public void findByUsernameFail() {
         String username = "random@email.com";
         accountService.loadUserByUsername(username);
+
+        // jUnit 5에서는 위에서 처럼 애노테이션으로 예외 타입을 확인하지 않고,
+        // 아래와 같이 assertThrows()를 사용해서 예외 타입을 확인할 수 있다.
+        // assertThrows(UsernameNotFoundException.class, () -> accountService.loadUserByUsername(username));
     }
 
     // 실제 예외를 가지고 와서 확인하는 방법.
