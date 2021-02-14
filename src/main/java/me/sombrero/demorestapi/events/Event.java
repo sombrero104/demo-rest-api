@@ -1,7 +1,9 @@
 package me.sombrero.demorestapi.events;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import me.sombrero.demorestapi.accounts.Account;
+import me.sombrero.demorestapi.accounts.AccountSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -44,7 +46,18 @@ public class Event {
     private boolean free;
     @Enumerated(EnumType.STRING) // enum 순서가 바뀔수도 있기 때문에 문자열로.
     private EventStatus eventStatus = EventStatus.DRAFT;
-    @ManyToOne
+
+    /**
+     * Event를 사용할 때의 Account 정보는 아이디 외에 다른 정보는 필요없기 때문에
+     * (특히 패스워드 같은 정보들도 Event 객체를 사용할 때 같이 노출되므로..)
+     * AccountSerializer를 만들어서 ObjectMapper가 Account를 JSON으로 변환할 때
+     * id 정보만 JSON 내용에 넣도록 한다.
+     * 그리고 Account가 다른곳에서 (회원정보 수정과 같은..) 사용될 때에는 Account의 모든 정보가 필요하고
+     * Event 객체 내에서만 Account의 다른 정보는 가려지고 id만 JSON으로 변환되도록
+     * 아래와 같이 Event 내의 Account 필드에
+     * '@JsonSerialize(using = AccountSerializer.class)' 애노테이션을 붙여준다.
+     */
+    @ManyToOne @JsonSerialize(using = AccountSerializer.class)
     private Account manager; // 이벤트 관리자.
 
     public void update() {
