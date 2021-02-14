@@ -107,6 +107,7 @@ https://dassum.medium.com/securing-spring-boot-rest-api-with-json-web-token-and-
 <br/><br/><br/>
 
 [참고]<br/>
-* jUnit4 패키지: org.junit.Test;<br/>
-* jUnit5 패키지: org.junit.jupiter.api.Test;<br/>
+* jUnit 4 패키지: org.junit.Test;<br/>
+* jUnit 5 패키지: org.junit.jupiter.api.Test;<br/>
+(현재 이 프로젝트에서는 jUnit 4 버전을 사용했음.)
 <br/><br/><br/>
