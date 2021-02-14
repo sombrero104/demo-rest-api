@@ -106,7 +106,7 @@ https://www.baeldung.com/spring-security-oauth-resource-server  <br/>
 https://dassum.medium.com/securing-spring-boot-rest-api-with-json-web-token-and-jdbc-token-store-67558a7d6c29  <br/>
 <br/><br/><br/>
 
-
+[참고]<br/>
 * jUnit4 패키지: org.junit.Test;<br/>
 * jUnit5 패키지: org.junit.jupiter.api.Test;<br/>
 <br/><br/><br/>
