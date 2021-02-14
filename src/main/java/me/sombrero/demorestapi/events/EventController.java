@@ -11,6 +11,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -188,7 +189,8 @@ public class EventController {
     @PutMapping("/{id}")
     public ResponseEntity updateEvent(@PathVariable Integer id,
                                       @RequestBody @Valid EventDto eventDto,
-                                      Errors errors) {
+                                      Errors errors,
+                                      @CurrentUser Account account) {
         Optional<Event> optionalEvent = this.eventRepository.findById(id);
         if(optionalEvent.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -204,6 +206,10 @@ public class EventController {
         }
 
         Event existingEvent = optionalEvent.get();
+        if(!existingEvent.getManager().equals(account)) { // 현재 사용자가 이 이벤트를 생성한 사람이 아닌 경우.
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED); // 인가되지 않았다고 응답을 반환함.
+        }
+
         this.modelMapper.map(eventDto, existingEvent); // eventDto의 데이터를 existingEvent로 덮어씀.
         Event savedEvent = this.eventRepository.save(existingEvent);
 
