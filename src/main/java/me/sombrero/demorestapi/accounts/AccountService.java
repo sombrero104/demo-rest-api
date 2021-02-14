@@ -61,6 +61,8 @@ public class AccountService implements UserDetailsService {
          * AccountAdapter는 User를 상속받고 User는 UserDetails를 상속받는다.
          * AccountAdapter와 User의 다른 점은 AccountAdapter는 User의 기능도 가지면서
          * Account를 저장하도록 만들었다. 때문에 AccountAdapter 언제든 Account를 꺼내서 쓸 수 있다.
+         * 이곳에서 반환하는 객체 타입으로 컨트롤러에서 받아서 쓸 수 있기 때문에
+         * 이제 컨트롤러에서는 User가 아닌 AccountAdapter를 받아서 쓸 수 있다.
          */
         return new AccountAdapter(account);
     }

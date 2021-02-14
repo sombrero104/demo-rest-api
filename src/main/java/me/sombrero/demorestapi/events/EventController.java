@@ -1,5 +1,6 @@
 package me.sombrero.demorestapi.events;
 
+import me.sombrero.demorestapi.accounts.AccountAdapter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -122,7 +123,8 @@ public class EventController {
 
     @GetMapping
     public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler
-                                        , @AuthenticationPrincipal User user) {
+                                        // , @AuthenticationPrincipal User user) {
+                                        , @AuthenticationPrincipal AccountAdapter accountAdapter) {
 
         // 현재 사용자 정보 가져오기.
         // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -138,7 +140,8 @@ public class EventController {
          * 이런 경우에는 현재 사용자가 있는지 없는지만 판단하면 되기 때문에 스프링 시큐리티가 제공하는 User로 사용해도 된다.
          * 하지만 이벤트를 생성할 때에는 Account 정보를 Event에 주입해줘야 하기 때문에 Account가 필요하다.
          */
-        if(user != null) {
+        // if(user != null) {
+        if(accountAdapter != null) {
             pagedModel.add(linkTo(EventController.class).withRel("create-event"));
         }
 
