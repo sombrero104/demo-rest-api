@@ -1,5 +1,6 @@
 package me.sombrero.demorestapi.events;
 
+import me.sombrero.demorestapi.accounts.Account;
 import me.sombrero.demorestapi.accounts.AccountAdapter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,8 +124,17 @@ public class EventController {
 
     @GetMapping
     public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler
-                                        // , @AuthenticationPrincipal User user) {
-                                        , @AuthenticationPrincipal AccountAdapter accountAdapter) {
+                                        // , @AuthenticationPrincipal User user) { // 1. 스프링 시큐리티가 제공하는 User로 가져오는 방법.
+                                        // , @AuthenticationPrincipal AccountAdapter accountAdapter) { // 2. AccountAdapter를 만드는 방법.
+                                        , @AuthenticationPrincipal(expression = "account") Account account) { // 3. Account 필드를 가져오는 방법.
+        /**
+         * 1. 스프링 시큐리티가 제공하는 User로 가져오는 방법.
+         * 2. User를 상속받는 AccountAdapter를 만들어서 Account 정보도 저장하도록 추가한 후 AccountAdapter로 가져오는 방법.
+         * 3. AccountAdapter가 가지고 있는 Account 필드를 가져오는 방법.
+         *    '@AuthenticationPrincipal AccountAdapter accountAdapter'로 AccountAdapter를 가져오도록 하지 않고,
+         *    @AuthenticationPrincipal에 '(expression = "account")'를 사용하면,
+         *    AccountAdapter 필드 중 Account 필드를 가져와서 주입해준다.
+         */
 
         // 현재 사용자 정보 가져오기.
         // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -141,7 +151,8 @@ public class EventController {
          * 하지만 이벤트를 생성할 때에는 Account 정보를 Event에 주입해줘야 하기 때문에 Account가 필요하다.
          */
         // if(user != null) {
-        if(accountAdapter != null) {
+        // if(accountAdapter != null) {
+        if(account != null) {
             pagedModel.add(linkTo(EventController.class).withRel("create-event"));
         }
 
